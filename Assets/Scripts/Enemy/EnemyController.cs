@@ -1,60 +1,43 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using Tank;
+﻿using Singalton;
 using UnityEngine;
 
 namespace Enemy
 {
-    public class EnemyController : IController
+    public class EnemyController
     {
         public EnemyController(EnemyModel enemyModel, EnemyView enemyPrefab, Transform enemyParent, Vector3 spawnPos)
         {
-            C_EnemyModel = enemyModel;
-            C_EnemyParent = enemyParent;
-            C_EnemyView = GameObject.Instantiate<EnemyView>(enemyPrefab,
-                                  spawnPos, enemyModel.M_SpawnPointSafe.rotation);
-            C_EnemyView.Initialize(this);
+            EnemyModel = enemyModel;
+            EnemyParent = enemyParent;
+            EnemyView = GameObject.Instantiate<EnemyView>(enemyPrefab,
+                                  spawnPos, enemyModel.SpawnPointSafe.rotation);
+            EnemyView.Initialize(this);
         }
 
 
-        public EnemyModel C_EnemyModel { get; private set; }
-        public EnemyView C_EnemyView { get; private set; }
-        public Transform C_EnemyParent { get; private set; }
+        public EnemyModel EnemyModel { get; private set; }
+        public EnemyView EnemyView { get; private set; }
+        public Transform EnemyParent { get; private set; }
 
 
-        public IModel GetModel()
+        public EnemyModel GetModel()
         {
-            return C_EnemyModel;
-        }
-
-
-        private Vector3 GetRandomPos()
-        {
-            float X_Pos = Random.Range(C_EnemyModel.M_EnemySpawnPoint1.position.x,
-                C_EnemyModel.M_EnemySpawnPoint2.position.x);
-            float Z_Pos = Random.Range(C_EnemyModel.M_EnemySpawnPoint1.position.z, 
-                C_EnemyModel.M_EnemySpawnPoint2.position.z);
-
-            Vector3 randomPos = new Vector3(X_Pos,0,Z_Pos);
-            return randomPos;
+            return EnemyModel;
         }
 
 
         public void KillTank()
         {
-            Object.Destroy(C_EnemyView.gameObject);
-            C_EnemyModel = null;
-            C_EnemyView = null;
-            C_EnemyParent = null;
+            VFXManager.Instance.PlayVFXClip(VFXName.TankExplosion, EnemyView.transform.position, EnemyParent);
+            SoundManager.Instance.PlaySoundClip(ClipName.TankExplosion);
+            EnemyView.KillView();
+            EnemyModel = null;
+            EnemyView = null;
+            EnemyParent = null;
         }
 
-        public void OnDeath(ParticleSystem m_ExplosionParticles, Vector3 tankPosition)
+        public void OnDeath()
         {
-            m_ExplosionParticles.transform.position = tankPosition;
-            m_ExplosionParticles.gameObject.SetActive(true);
-
-            m_ExplosionParticles.Play();
-
             EnemyService.Instance.DestroyEnemy(this);
         }
     }

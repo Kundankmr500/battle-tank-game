@@ -2,17 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Generic;
+using ScriptableObj;
 
 namespace Enemy
 {
     public class EnemyService : MonoSingletonGeneric<EnemyService>
     {
         public Transform EnamyParent;
-        public List<EnemyController> Enemies = new List<EnemyController>();
         public List<EnemyScriptableObj> EnamyScriptableObjs;
         public KeyCode EnemySpawnKey;
-
-        private EnemyView EnamyPrafab;
+        [SerializeField]
+        private List<EnemyController> Enemies = new List<EnemyController>();
 
         protected override void Awake()
         {
@@ -24,10 +24,10 @@ namespace Enemy
         {
             if (Input.GetKeyDown(EnemySpawnKey))
             {
-                for (int i = 0; i < EnamyScriptableObjs.Count; i++)
+                for (int tankIndex = 0; tankIndex < EnamyScriptableObjs.Count; tankIndex++)
                 {
-                    SpawnEnamy(i, GetRandomPos(EnamyScriptableObjs[i].EnemySpawnPoint1.position,
-                                               EnamyScriptableObjs[i].EnemySpawnPoint2.position));
+                    SpawnEnamy(tankIndex, GetRandomPos(EnamyScriptableObjs[tankIndex].EnemySpawnPoint1.position,
+                                               EnamyScriptableObjs[tankIndex].EnemySpawnPoint2.position));
                 }
             }
 
@@ -43,8 +43,7 @@ namespace Enemy
         void SpawnEnamy(int enemyIndex, Vector3 spawnPos)
         {
             EnemyModel enemyModel = new EnemyModel(EnamyScriptableObjs[enemyIndex]);
-            EnamyPrafab = enemyModel.M_EnemyView;
-            EnemyController EnemyObj = new EnemyController(enemyModel, EnamyPrafab, EnamyParent, spawnPos);
+            EnemyController EnemyObj = new EnemyController(enemyModel, enemyModel.EnemyView, EnamyParent, spawnPos);
             Enemies.Add(EnemyObj);
         }
 
@@ -69,11 +68,12 @@ namespace Enemy
                 if (Enemies[i] == enemyTank)
                 {
                     Enemies.Remove(Enemies[i]);
+                    break;
                 }
             }
             enemyTank = null;
 
-            SpawnEnemyOnSafePosition();
+            //SpawnEnemyOnSafePosition();
         }
 
 
@@ -81,6 +81,18 @@ namespace Enemy
         {
             if (Enemies.Count < 1)
                 SpawnEnamy(0, EnamyScriptableObjs[0].EnemySpawnSafe.position);
+        }
+
+
+        public IEnumerator DestroyAllEnemies()
+        {
+            for (int i = Enemies.Count; i > 0; i--)
+            {
+                yield return new WaitForSeconds(1f);
+                DestroyEnemy(Enemies[0]);
+            }
+            yield return new WaitForSeconds(1f);
+            GameService.Instance.DestroyeAllGameArts();
         }
     }
 }
