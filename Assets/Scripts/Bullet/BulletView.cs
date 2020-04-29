@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using Singalton;
+using Enemy;
 
 namespace Bullet
 {
@@ -38,7 +39,8 @@ namespace Bullet
 
         private void OnTriggerEnter(Collider other)
         {
-            BulletHitProcess();
+            if(!other.GetComponent<TankState>())
+                BulletHitProcess();
         }
 
 
@@ -47,9 +49,9 @@ namespace Bullet
             Collider[] colliders = Physics.OverlapSphere(transform.position, 
                             bulletController.GetModel().ExplosionRadius, TankMask);
 
-            for (int i = 0; i < colliders.Length; i++)
+            for (int colliderIndex = 0; colliderIndex < colliders.Length; colliderIndex++)
             {
-                Rigidbody targetRigidbody = colliders[i].GetComponent<Rigidbody>();
+                Rigidbody targetRigidbody = colliders[colliderIndex].GetComponent<Rigidbody>();
 
                 if (!targetRigidbody)
                     continue;
