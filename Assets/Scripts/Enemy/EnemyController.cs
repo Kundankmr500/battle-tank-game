@@ -1,5 +1,6 @@
 ﻿using Singalton;
 using UnityEngine;
+using Bullet;
 
 namespace Enemy
 {
@@ -23,6 +24,29 @@ namespace Enemy
         public EnemyModel GetModel()
         {
             return EnemyModel;
+        }
+
+
+        public void FireBullet(Transform bulletTransform)
+        {
+            BulletController bulletConroller = BulletService.Instance.GetBullet(bulletTransform, EnemyModel.TankDamageBooster);
+            bulletConroller.FireBullet(bulletTransform, EnemyModel.BulletLaunchForce);
+            
+        }
+
+        public void EnemyTurn(Transform target)
+        {
+            Vector3 enemyDir = target.position - EnemyView.transform.position;
+            enemyDir.Normalize();
+            EnemyMove(enemyDir);
+            EnemyView.transform.rotation = Quaternion.Slerp(EnemyView.transform.rotation, 
+                Quaternion.LookRotation(enemyDir), EnemyModel.TurnSpeed * Time.deltaTime);
+        }
+
+
+        public void EnemyMove(Vector3 enemyDir)
+        {
+            EnemyView.enemyBody.velocity = enemyDir ;
         }
 
 

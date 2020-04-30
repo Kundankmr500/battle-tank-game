@@ -24,7 +24,7 @@ MonoBehaviour:
   EnemyDamageBooster: 7
   Health: 70
   BulletLaunchForce: 15
-  EnemyTankSpeed: 5
-  EnemyTurnSpeed: 180
+  EnemyTankSpeed: 2
+  EnemyTurnSpeed: 2
   PitchRange: 0.2
   EnemyNumber: 1

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 
 namespace Enemy
@@ -11,9 +12,17 @@ namespace Enemy
         public AudioClip EngineIdling;
         public AudioClip EngineDriving;
         public ParticleSystem[] particleSystems;
+        public TankPatrollingState tankPatrollingState;
+        public TankChasingState tankChasingState;
+        public TankFiringState tankFiringState;
+        public TankIdleState tankIdleState;
+        public Rigidbody enemyBody;
 
-        private Rigidbody enemyBody;
-        EnemyController enemyController;
+        [SerializeField]
+        private TankState currentState;
+        private Coroutine fireCoroutine;
+        
+        public EnemyController enemyController;
 
         internal void Initialize(EnemyController controller)
         {
@@ -34,28 +43,48 @@ namespace Enemy
             {
                 particleSystems[i].Play();
             }
-        }
 
-        private void Update()
-        {
-            //enemyController.PlayEngineAudio(m_MovementInputValue, m_TurnInputValue, m_MovementAudio,
-            //                           m_EngineDriving, m_EngineIdling, m_OriginalPitch);
+            ChangeState(tankIdleState);
         }
 
 
         private void OnCollisionEnter(Collision collision)
         {
-            if(collision.gameObject.GetComponent<IDestructable>() != null)
+            IDestructable destructable = collision.gameObject.GetComponent<IDestructable>();
+
+            if (destructable != null)
             {
-                IDestructable destructable = collision.gameObject.GetComponent<IDestructable>();
                 destructable.TakeDamage(100);
             }
+        }
+
+        public IEnumerator StartFiring(Transform target)
+        {
+            enemyController.FireBullet(FireTransform);
+            fireCoroutine = null;
+            yield return new WaitForSeconds(1.5f);
+
+            if (target && fireCoroutine == null && currentState == tankFiringState)
+                fireCoroutine = StartCoroutine(StartFiring(target));
         }
 
 
         public void KillView()
         {
             Destroy(gameObject);
+        }
+
+
+        public void ChangeState(TankState newState)
+        {
+            if(currentState != null)
+            {
+                currentState.OnExitState();
+            }
+
+            currentState = newState;
+
+            currentState.OnEnterState();
         }
 
     }
