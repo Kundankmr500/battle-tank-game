@@ -30,7 +30,6 @@ namespace Tank
         {
             BulletController bulletConroller = BulletService.Instance.GetBullet(bulletTransform, TankModel.TankDamageBooster);
             bulletConroller.FireBullet(bulletTransform, TankModel.BulletLaunchForce);
-            EventService.Instance.FireBulletFireEvent();
         }
 
 

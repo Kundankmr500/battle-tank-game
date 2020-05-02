@@ -10,13 +10,13 @@ namespace Enemy
         public override void OnEnterState()
         {
             base.OnEnterState();
-            //Debug.Log("Entering TankChasing state");
+            Debug.Log("Entering TankChasing state");
         }
 
         public override void OnExitState()
         {
             base.OnExitState();
-            //Debug.Log("Exiting TankChasing state");
+            Debug.Log("Exiting TankChasing state");
         }
 
         private void OnTriggerEnter(Collider other)

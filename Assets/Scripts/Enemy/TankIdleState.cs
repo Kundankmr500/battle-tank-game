@@ -10,13 +10,13 @@ namespace Enemy
         public override void OnEnterState()
         {
             base.OnEnterState();
-            //Debug.Log("Entering Idle state");
+            Debug.Log("Entering Idle state");
         }
 
         public override void OnExitState()
         {
             base.OnExitState();
-            //Debug.Log("Exiting idle state");
+            Debug.Log("Exiting idle state");
         }
 
     }
