@@ -72,8 +72,8 @@ namespace Enemy
                 }
             }
             enemyTank = null;
-            EventService.Instance.FireEnemyDeathEvent();
-            SpawnEnemyOnSafePosition();
+
+            //SpawnEnemyOnSafePosition();
         }
 
 
