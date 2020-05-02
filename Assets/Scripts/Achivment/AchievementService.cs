@@ -12,7 +12,8 @@ public class AchievementService : MonoSingletonGeneric<AchievementService>
 
     private int enemyKillCount;
     private int playerBulletFireCount;
-
+    private int scoreValue;
+    private int enemyKillValue;
 
 
     protected override void Awake()
@@ -33,8 +34,8 @@ public class AchievementService : MonoSingletonGeneric<AchievementService>
     public void OnDeathAchivement()
     {
         enemyKillCount++;
-
-        if(enemyKillCount == EnemyKillCountAchivement)
+        CalculateScore();
+        if (enemyKillCount == EnemyKillCountAchivement)
         {
             enemyKillCount = 0;
             ProcessAchievement(AchievementName.EnemyDeathAchievement);
@@ -70,6 +71,15 @@ public class AchievementService : MonoSingletonGeneric<AchievementService>
                 UIService.Instance.ShowAchivementUI(Achievements[i].Achievement);
             }
         }
+    }
+
+
+    private void CalculateScore()
+    {
+        scoreValue += 10;
+        enemyKillValue++;
+        UIService.Instance.ShowEnemyKill(enemyKillValue);
+        UIService.Instance.ShowScore(scoreValue);
     }
 
 }
