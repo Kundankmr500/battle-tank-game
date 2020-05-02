@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System;
 
 
 namespace Tank
@@ -26,8 +27,23 @@ namespace Tank
         private TankController tankController;
 
 
+        private void Awake()
+        {
+            Debug.Log("Awake "+ DateTime.Now.Millisecond);
+        }
+
+        private void Start()
+        {
+            Debug.Log("Start "+ DateTime.Now.Millisecond);
+            movementAxisName = Constants.VerticalInput + playerNumber;
+            turnAxisName = Constants.HorizontalInput + playerNumber;
+
+            originalPitch = MovementAudio.pitch;
+        }
+
         public void Initialize(TankController tankController)
         {
+            Debug.Log("Initialize "+ DateTime.Now.Millisecond);
             this.tankController = tankController;
             InitAllVariables();
         }
@@ -66,17 +82,9 @@ namespace Tank
         }
 
 
-        private void Start()
-        {
-            movementAxisName = Constants.VerticalInput + playerNumber;
-            turnAxisName = Constants.HorizontalInput + playerNumber;
-
-            originalPitch = MovementAudio.pitch;
-        }
-
-
         private void Update()
         {
+            //Debug.Log("Update " + DateTime.Now.Millisecond);
             ChekingPlayerInput();
 
             tankController.PlayEngineAudio(movementInputValue, turnInputValue, MovementAudio,
@@ -98,6 +106,7 @@ namespace Tank
 
         private void FixedUpdate()
         {
+            //Debug.Log("FixedUpdate " + DateTime.Now.Millisecond);
             tankController.TankMove(tankBody, transform, movementInputValue);
 
             tankController.TankTurn(tankBody, turnInputValue);

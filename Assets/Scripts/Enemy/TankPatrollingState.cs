@@ -7,13 +7,13 @@ namespace Enemy
         public override void OnEnterState()
         {
             base.OnEnterState();
-            Debug.Log("Entering Patrolling state");
+            //Debug.Log("Entering Patrolling state");
         }
 
         public override void OnExitState()
         {
             base.OnExitState();
-            Debug.Log("Exiting Patrolling state");
+            //Debug.Log("Exiting Patrolling state");
         }
 
         private void OnTriggerEnter(Collider other)
