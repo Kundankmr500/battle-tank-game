@@ -10,14 +10,14 @@ namespace Enemy
         public override void OnEnterState()
         {
             base.OnEnterState();
-            Debug.Log("Entering TankFiring state");
+            //Debug.Log("Entering TankFiring state");
         }
 
 
         public override void OnExitState()
         {
             base.OnExitState();
-            Debug.Log("Exiting TankFiring state");
+            //Debug.Log("Exiting TankFiring state");
         }
 
 
