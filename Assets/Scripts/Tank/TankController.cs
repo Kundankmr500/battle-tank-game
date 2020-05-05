@@ -1,6 +1,5 @@
 ﻿using Bullet;
 using Singalton;
-using System.Collections;
 using UnityEngine;
 
 namespace Tank

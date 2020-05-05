@@ -3,111 +3,114 @@ using ScriptableObj;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AchievementService : MonoSingletonGeneric<AchievementService>
+namespace Singalton
 {
-    public List<AchievementScriptableObj> Achievements = new List<AchievementScriptableObj>();
-
-    private int enemyKillCount;
-    private int playerBulletFireCount;
-    private int scoreValue;
-    private int enemyKillValue;
-    private GameData gameData = new GameData();
-
-
-    protected override void Awake()
+    public class AchievementService : MonoSingletonGeneric<AchievementService>
     {
-        base.Awake();
-        SubscribeEvents();
-        enemyKillCount = 0;
-        playerBulletFireCount = 0;
-    }
+        public List<AchievementScriptableObj> Achievements = new List<AchievementScriptableObj>();
+
+        private int enemyKillCount;
+        private int playerBulletFireCount;
+        private int scoreValue;
+        private int enemyKillValue;
+        private GameData gameData = new GameData();
 
 
-    private void SubscribeEvents()
-    {
-        EventService.Instance.OnEnemyDeath += OnDeathAchivement;
-        EventService.Instance.OnBulletFired += OnPlayerBulletFireAchivement;
-        EventService.Instance.OnEnemiesHit += OnEnemiesHitAchivement;
-    }
-
-
-    public void OnEnemiesHitAchivement()
-    {
-        gameData.EnemiesHit++;
-    }
-
-
-    public void OnDeathAchivement(AchievementName achievementName)
-    {
-        enemyKillCount++;
-        CalculateScore();
-        gameData.EnemiesKilled++;
-
-        int index = FindAchievementIndex(achievementName);
-
-        if (enemyKillCount == Achievements[index].KillCount)
+        protected override void Awake()
         {
+            base.Awake();
+            SubscribeEvents();
             enemyKillCount = 0;
-            UIService.Instance.ShowAchivementUI(Achievements[index].Achievement, 
-                                    Achievements[index].AchievementShowingTime);
-        }
-    }
-
-
-    public void OnPlayerBulletFireAchivement(AchievementName achievementName)
-    {
-        playerBulletFireCount++;
-        gameData.BulletsFired++;
-
-        int index = FindAchievementIndex(achievementName);
-
-        if (playerBulletFireCount == Achievements[index].KillCount)
-        {
             playerBulletFireCount = 0;
-            UIService.Instance.ShowAchivementUI(Achievements[index].Achievement,
-                                    Achievements[index].AchievementShowingTime);
         }
-    }
 
 
-    private void OnDestroy()
-    {
-        UnsubscribeEvents();
-
-        GameService.Instance.SaveData(gameData);
-    }
-
-
-    private void UnsubscribeEvents()
-    {
-        EventService.Instance.OnEnemyDeath -= OnDeathAchivement;
-        EventService.Instance.OnBulletFired -= OnPlayerBulletFireAchivement;
-        EventService.Instance.OnEnemiesHit -= OnEnemiesHitAchivement;
-    }
-
-
-    private int FindAchievementIndex(AchievementName achievementName)
-    {
-        int index = 0;
-        for (int i = 0; i < Achievements.Count; i++)
+        private void SubscribeEvents()
         {
-            if (Achievements[i].Name == achievementName)
+            EventService.Instance.OnEnemyDeath += OnDeathAchivement;
+            EventService.Instance.OnBulletFired += OnPlayerBulletFireAchivement;
+            EventService.Instance.OnEnemiesHit += OnEnemiesHitAchivement;
+        }
+
+
+        public void OnEnemiesHitAchivement()
+        {
+            gameData.EnemiesHit++;
+        }
+
+
+        public void OnDeathAchivement(AchievementName achievementName)
+        {
+            enemyKillCount++;
+            CalculateScore();
+            gameData.EnemiesKilled++;
+
+            int index = FindAchievementIndex(achievementName);
+
+            if (enemyKillCount == Achievements[index].KillCount)
             {
-                index = i;
-                return index;
+                enemyKillCount = 0;
+                UIService.Instance.ShowAchivementUI(Achievements[index].Achievement,
+                                        Achievements[index].AchievementShowingTime);
             }
         }
-        return index;
+
+
+        public void OnPlayerBulletFireAchivement(AchievementName achievementName)
+        {
+            playerBulletFireCount++;
+            gameData.BulletsFired++;
+
+            int index = FindAchievementIndex(achievementName);
+
+            if (playerBulletFireCount == Achievements[index].KillCount)
+            {
+                playerBulletFireCount = 0;
+                UIService.Instance.ShowAchivementUI(Achievements[index].Achievement,
+                                        Achievements[index].AchievementShowingTime);
+            }
+        }
+
+
+        private void OnDestroy()
+        {
+            UnsubscribeEvents();
+
+            GameService.Instance.SaveData(gameData);
+        }
+
+
+        private void UnsubscribeEvents()
+        {
+            EventService.Instance.OnEnemyDeath -= OnDeathAchivement;
+            EventService.Instance.OnBulletFired -= OnPlayerBulletFireAchivement;
+            EventService.Instance.OnEnemiesHit -= OnEnemiesHitAchivement;
+        }
+
+
+        private int FindAchievementIndex(AchievementName achievementName)
+        {
+            int index = 0;
+            for (int i = 0; i < Achievements.Count; i++)
+            {
+                if (Achievements[i].Name == achievementName)
+                {
+                    index = i;
+                    return index;
+                }
+            }
+            return index;
+        }
+
+
+        private void CalculateScore()
+        {
+            scoreValue += 10;
+            enemyKillValue++;
+            gameData.PlayerScore = scoreValue;
+            UIService.Instance.ShowEnemyKill(enemyKillValue);
+            UIService.Instance.ShowScore(scoreValue);
+        }
+
     }
-
-
-    private void CalculateScore()
-    {
-        scoreValue += 10;
-        enemyKillValue++;
-        gameData.PlayerScore = scoreValue;
-        UIService.Instance.ShowEnemyKill(enemyKillValue);
-        UIService.Instance.ShowScore(scoreValue);
-    }
-
 }

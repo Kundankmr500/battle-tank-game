@@ -1,33 +1,36 @@
 ﻿using System;
 using Generic;
 
-public class EventService : MonoSingletonGeneric<EventService>
+namespace Singalton
 {
-    public event Action<AchievementName> OnEnemyDeath;
-    public event Action<AchievementName> OnBulletFired;
-    public event Action OnEnemiesHit;
-
-
-    protected override void Awake()
+    public class EventService : MonoSingletonGeneric<EventService>
     {
-        base.Awake();
-    }
+        public event Action<AchievementName> OnEnemyDeath;
+        public event Action<AchievementName> OnBulletFired;
+        public event Action OnEnemiesHit;
 
 
-    public void FireEnemyDeathEvent(AchievementName achievementName)
-    {
-        OnEnemyDeath?.Invoke(achievementName);
-    }
+        protected override void Awake()
+        {
+            base.Awake();
+        }
 
 
-    public void FireBulletFireEvent(AchievementName achievementName)
-    {
-        OnBulletFired?.Invoke(achievementName);
-    }
+        public void FireEnemyDeathEvent(AchievementName achievementName)
+        {
+            OnEnemyDeath?.Invoke(achievementName);
+        }
 
 
-    public void FireOnEnemiesHitEvent()
-    {
-        OnEnemiesHit?.Invoke();
+        public void FireBulletFireEvent(AchievementName achievementName)
+        {
+            OnBulletFired?.Invoke(achievementName);
+        }
+
+
+        public void FireOnEnemiesHitEvent()
+        {
+            OnEnemiesHit?.Invoke();
+        }
     }
 }
