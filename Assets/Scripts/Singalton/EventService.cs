@@ -3,8 +3,9 @@ using Generic;
 
 public class EventService : MonoSingletonGeneric<EventService>
 {
-    public event Action OnEnemyDeath;
-    public event Action OnBulletFired;
+    public event Action<AchievementName> OnEnemyDeath;
+    public event Action<AchievementName> OnBulletFired;
+    public event Action OnEnemiesHit;
 
 
     protected override void Awake()
@@ -13,14 +14,20 @@ public class EventService : MonoSingletonGeneric<EventService>
     }
 
 
-    public void FireEnemyDeathEvent()
+    public void FireEnemyDeathEvent(AchievementName achievementName)
     {
-        OnEnemyDeath?.Invoke();
+        OnEnemyDeath?.Invoke(achievementName);
     }
 
 
-    public void FireBulletFireEvent()
+    public void FireBulletFireEvent(AchievementName achievementName)
     {
-        OnBulletFired?.Invoke();
+        OnBulletFired?.Invoke(achievementName);
+    }
+
+
+    public void FireOnEnemiesHitEvent()
+    {
+        OnEnemiesHit?.Invoke();
     }
 }

@@ -36,6 +36,7 @@ namespace Enemy
 
         public void TakeDamage(float amount)
         {
+            EventService.Instance.FireOnEnemiesHitEvent();
             currentHealth -= amount;
 
             SetHealthUI();

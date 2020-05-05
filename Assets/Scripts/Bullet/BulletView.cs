@@ -46,6 +46,9 @@ namespace Bullet
 
         private void BulletHitProcess()
         {
+            //Debug.Log(transform.name);
+            //Debug.Log(bulletController.GetModel().ExplosionRadius);
+            //Debug.Log(TankMask);
             Collider[] colliders = Physics.OverlapSphere(transform.position, 
                             bulletController.GetModel().ExplosionRadius, TankMask);
 

@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4fab304e29779c74a8e0846785db6cbb, type: 3}
+  m_Name: EnamyDeathAchievment
+  m_EditorClassIdentifier: 
+  Name: 1
+  Achievement: {fileID: 1090671218575176999, guid: 4894cb9bed7ca8f46ae6ab9584425bee,
+    type: 3}
+  KillCount: 10
+  AchievementShowingTime: 2

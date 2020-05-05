@@ -1,25 +1,25 @@
 ﻿using Generic;
+using ScriptableObj;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class AchievementService : MonoSingletonGeneric<AchievementService>
 {
-    public List<AchievementType> Achievements = new List<AchievementType>();
-    [Range(5,20)]
-    public int EnemyKillCountAchivement;
-    [Range(10,200)]
-    public int PlayerFireBulletAchivement;
+    public List<AchievementScriptableObj> Achievements = new List<AchievementScriptableObj>();
 
     private int enemyKillCount;
     private int playerBulletFireCount;
     private int scoreValue;
     private int enemyKillValue;
+    private GameData gameData = new GameData();
 
 
     protected override void Awake()
     {
         base.Awake();
         SubscribeEvents();
+        enemyKillCount = 0;
+        playerBulletFireCount = 0;
     }
 
 
@@ -27,50 +27,77 @@ public class AchievementService : MonoSingletonGeneric<AchievementService>
     {
         EventService.Instance.OnEnemyDeath += OnDeathAchivement;
         EventService.Instance.OnBulletFired += OnPlayerBulletFireAchivement;
-        enemyKillCount = 0;
-        playerBulletFireCount = 0;
+        EventService.Instance.OnEnemiesHit += OnEnemiesHitAchivement;
     }
 
-    public void OnDeathAchivement()
+
+    public void OnEnemiesHitAchivement()
+    {
+        gameData.EnemiesHit++;
+    }
+
+
+    public void OnDeathAchivement(AchievementName achievementName)
     {
         enemyKillCount++;
         CalculateScore();
-        if (enemyKillCount == EnemyKillCountAchivement)
+        gameData.EnemiesKilled++;
+
+        int index = FindAchievementIndex(achievementName);
+
+        if (enemyKillCount == Achievements[index].KillCount)
         {
             enemyKillCount = 0;
-            ProcessAchievement(AchievementName.EnemyDeathAchievement);
+            UIService.Instance.ShowAchivementUI(Achievements[index].Achievement, 
+                                    Achievements[index].AchievementShowingTime);
         }
     }
 
 
-    public void OnPlayerBulletFireAchivement()
+    public void OnPlayerBulletFireAchivement(AchievementName achievementName)
     {
         playerBulletFireCount++;
+        gameData.BulletsFired++;
 
-        if (playerBulletFireCount == PlayerFireBulletAchivement)
+        int index = FindAchievementIndex(achievementName);
+
+        if (playerBulletFireCount == Achievements[index].KillCount)
         {
             playerBulletFireCount = 0;
-            ProcessAchievement(AchievementName.PlayerBulletFireAchievement);
+            UIService.Instance.ShowAchivementUI(Achievements[index].Achievement,
+                                    Achievements[index].AchievementShowingTime);
         }
     }
 
 
     private void OnDestroy()
     {
-        EventService.Instance.OnEnemyDeath -= OnDeathAchivement;
-        EventService.Instance.OnBulletFired -= OnPlayerBulletFireAchivement;
+        UnsubscribeEvents();
+
+        GameService.Instance.SaveData(gameData);
     }
 
 
-    private void ProcessAchievement( AchievementName achievementName)
+    private void UnsubscribeEvents()
     {
+        EventService.Instance.OnEnemyDeath -= OnDeathAchivement;
+        EventService.Instance.OnBulletFired -= OnPlayerBulletFireAchivement;
+        EventService.Instance.OnEnemiesHit -= OnEnemiesHitAchivement;
+    }
+
+
+    private int FindAchievementIndex(AchievementName achievementName)
+    {
+        int index = 0;
         for (int i = 0; i < Achievements.Count; i++)
         {
             if (Achievements[i].Name == achievementName)
             {
-                UIService.Instance.ShowAchivementUI(Achievements[i].Achievement);
+                index = i;
+                return index;
             }
         }
+        return index;
     }
 
 
@@ -78,6 +105,7 @@ public class AchievementService : MonoSingletonGeneric<AchievementService>
     {
         scoreValue += 10;
         enemyKillValue++;
+        gameData.PlayerScore = scoreValue;
         UIService.Instance.ShowEnemyKill(enemyKillValue);
         UIService.Instance.ShowScore(scoreValue);
     }

@@ -5,8 +5,7 @@ using Generic;
 
 public class UIService : MonoSingletonGeneric<UIService>
 {
-    [Range(1,10)]
-    public int TimeToShowUIOnScreen;
+    public Transform AchievementParent;
     public TextMeshProUGUI ScoreText;
     public TextMeshProUGUI EnemyKillText;
 
@@ -16,17 +15,19 @@ public class UIService : MonoSingletonGeneric<UIService>
         Init();
     }
 
+
     void Init()
     {
         ShowScore(0);
         ShowEnemyKill(0);
     }
 
-    public async void ShowAchivementUI(GameObject achievement)
+
+    public async void ShowAchivementUI(GameObject achievement, float showTime)
     {
-        achievement.SetActive(true);
-        await new WaitForSeconds(TimeToShowUIOnScreen);
-        achievement.SetActive(false);
+        GameObject go = Instantiate(achievement, AchievementParent);
+        await new WaitForSeconds(showTime);
+        Destroy(go);
 
     }
 
@@ -35,6 +36,7 @@ public class UIService : MonoSingletonGeneric<UIService>
     {
         ScoreText.text = Constants.Score + scoreValue;
     }
+
 
     public void ShowEnemyKill(int enemyKillCount)
     {

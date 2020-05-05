@@ -5,4 +5,5 @@
     public const string HorizontalInput = "Horizontal";
     public const string EnemiesKilled = "Enemies killed : ";
     public const string Score = "Score : ";
+    public const string GameDataFileName = "/GameData.gamedata";
 }
