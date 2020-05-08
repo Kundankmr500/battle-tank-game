@@ -36,6 +36,7 @@ namespace Singalton
         public void OnEnemiesHitAchivement()
         {
             gameData.EnemiesHit++;
+            GameService.Instance.SaveData(gameData);
         }
 
 
@@ -44,7 +45,7 @@ namespace Singalton
             enemyKillCount++;
             CalculateScore();
             gameData.EnemiesKilled++;
-
+            GameService.Instance.SaveData(gameData);
             int index = FindAchievementIndex(achievementName);
 
             if (enemyKillCount == Achievements[index].KillCount)
@@ -60,7 +61,7 @@ namespace Singalton
         {
             playerBulletFireCount++;
             gameData.BulletsFired++;
-
+            GameService.Instance.SaveData(gameData);
             int index = FindAchievementIndex(achievementName);
 
             if (playerBulletFireCount == Achievements[index].KillCount)
@@ -76,7 +77,6 @@ namespace Singalton
         {
             UnsubscribeEvents();
 
-            GameService.Instance.SaveData(gameData);
         }
 
 
