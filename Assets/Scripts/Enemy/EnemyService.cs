@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Generic;
 using ScriptableObj;
+using Singalton;
 
 namespace Enemy
 {
@@ -73,7 +74,8 @@ namespace Enemy
             }
             enemyTank = null;
 
-            //SpawnEnemyOnSafePosition();
+            EventService.Instance.FireEnemyDeathEvent(AchievementName.EnemyDeathAchievement);
+            SpawnEnemyOnSafePosition();
         }
 
 

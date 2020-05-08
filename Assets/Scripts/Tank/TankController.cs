@@ -1,6 +1,5 @@
 ﻿using Bullet;
 using Singalton;
-using System.Collections;
 using UnityEngine;
 
 namespace Tank
@@ -30,6 +29,7 @@ namespace Tank
         {
             BulletController bulletConroller = BulletService.Instance.GetBullet(bulletTransform, TankModel.TankDamageBooster);
             bulletConroller.FireBullet(bulletTransform, TankModel.BulletLaunchForce);
+            EventService.Instance.FireBulletFireEvent(AchievementName.PlayerBulletFireAchievement);
         }
 
 

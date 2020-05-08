@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-
+using Singalton;
 
 namespace Enemy
 {
@@ -36,6 +36,7 @@ namespace Enemy
 
         public void TakeDamage(float amount)
         {
+            EventService.Instance.FireOnEnemiesHitEvent();
             currentHealth -= amount;
 
             SetHealthUI();
