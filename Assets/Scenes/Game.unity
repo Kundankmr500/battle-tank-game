@@ -1219,6 +1219,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1613100187}
   - component: {fileID: 1613100188}
+  - component: {fileID: 1613100189}
   m_Layer: 0
   m_Name: EnemyService
   m_TagString: Untagged
@@ -1256,6 +1257,18 @@ MonoBehaviour:
   EnamyScriptableObjs:
   - {fileID: 11400000, guid: 0b8be791a3a4ebb4fa8483b77fa8fb21, type: 2}
   EnemySpawnKey: 256
+--- !u!114 &1613100189
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1613100186}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 511175f5cc899594eb14326ace3a6f3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1733294292
 GameObject:
   m_ObjectHideFlags: 0
@@ -1334,6 +1347,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1898483148}
   - component: {fileID: 1898483149}
+  - component: {fileID: 1898483150}
   m_Layer: 0
   m_Name: TankService
   m_TagString: Untagged
@@ -1370,6 +1384,18 @@ MonoBehaviour:
   TankParent: {fileID: 1046570644}
   TankScriptableObjs:
   - {fileID: 11400000, guid: bf8db27d29ee7d149a756ce04ff20b74, type: 2}
+--- !u!114 &1898483150
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1898483147}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c56a1bc4bc185194798ccf3cda2c0ed9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1902199975
 GameObject:
   m_ObjectHideFlags: 0
@@ -1574,6 +1600,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2141566954}
   - component: {fileID: 2141566955}
+  - component: {fileID: 2141566956}
   m_Layer: 0
   m_Name: BulletService
   m_TagString: Untagged
@@ -1610,6 +1637,18 @@ MonoBehaviour:
   BulletParent: {fileID: 1046570644}
   BulletConfigurations:
   - {fileID: 11400000, guid: a7cdb74e50f420047ac445b3d5b900bd, type: 2}
+--- !u!114 &2141566956
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2141566953}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a9b5428963107c4283cce68aa8d5d43, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &3181030536634397591
 PrefabInstance:
   m_ObjectHideFlags: 0

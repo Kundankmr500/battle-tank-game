@@ -1,6 +1,7 @@
 ﻿using Singalton;
 using UnityEngine;
 using Bullet;
+using System;
 
 namespace Enemy
 {
@@ -50,14 +51,11 @@ namespace Enemy
         }
 
 
-        public void KillTank()
+        public void DisableTank()
         {
             VFXManager.Instance.PlayVFXClip(VFXName.TankExplosion, EnemyView.transform.position, EnemyParent);
             SoundManager.Instance.PlaySoundClip(ClipName.TankExplosion);
-            EnemyView.KillView();
-            EnemyModel = null;
-            EnemyView = null;
-            EnemyParent = null;
+            EnemyView.Disable();
         }
 
         public void OnDeath()

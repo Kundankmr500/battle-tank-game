@@ -2,6 +2,7 @@
 using System.Collections;
 using Singalton;
 using Enemy;
+using System;
 
 namespace Bullet
 {
@@ -26,9 +27,21 @@ namespace Bullet
             bulletBody = GetComponent<Rigidbody>();
             transform.SetParent(bulletController.BulletParent);
             SoundManager.Instance.PlaySoundClip(ClipName.ShotFiring);
+
             StartCoroutine(AutoDestroy());
         }
 
+        public void CheckBulletTransform()
+        {
+            Enable();
+            transform.position = bulletController.GetModel().SpawnTransform.position;
+            transform.rotation = bulletController.GetModel().SpawnTransform.rotation;
+        }
+
+        internal void Enable()
+        {
+            gameObject.SetActive(true);
+        }
 
         IEnumerator AutoDestroy()
         {
@@ -82,9 +95,9 @@ namespace Bullet
         }
 
 
-        public void KillView()
+        public void Disable()
         {
-            Destroy(gameObject);
+            gameObject.SetActive(false);
         }
 
     }

@@ -9,7 +9,7 @@ namespace Bullet
             BulletModel = bulletModel;
             BulletParent = bulletParent;
             BulletView = GameObject.Instantiate<BulletView>
-                (bulletPrefab, bulletModel.SpawnTransform.position, bulletModel.SpawnTransform.rotation);
+                (bulletPrefab);
             BulletView.Initialize(this);
         }
 
@@ -27,14 +27,12 @@ namespace Bullet
         public void FireBullet(Transform bulletTransform, float bulletLaunchForce)
         {
             BulletView.bulletBody.velocity = bulletLaunchForce * bulletTransform.forward;
+            Debug.Log("bulletLaunchForce "+ bulletLaunchForce);
         }
 
-        public void KillController()
+        public void DisableTank()
         {
-            BulletView.KillView();
-            BulletModel = null;
-            BulletView = null;
-            BulletParent = null;
+            BulletView.Disable();
         }
 
 

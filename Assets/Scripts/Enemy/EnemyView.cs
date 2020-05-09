@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 
 
@@ -21,7 +22,7 @@ namespace Enemy
         [SerializeField]
         private TankState currentState;
         private Coroutine fireCoroutine;
-        
+
         public EnemyController enemyController;
 
         internal void Initialize(EnemyController controller)
@@ -30,6 +31,12 @@ namespace Enemy
             InitAllVariables();
         }
 
+        internal void CheckBulletTransform(Vector3 spawnPos)
+        {
+            Enable();
+            transform.position = spawnPos;
+            transform.rotation = enemyController.GetModel().SpawnPointSafe.rotation;
+        }
 
         private void InitAllVariables()
         {
@@ -69,9 +76,15 @@ namespace Enemy
         }
 
 
-        public void KillView()
+        public void Disable()
         {
-            Destroy(gameObject);
+            gameObject.SetActive(false);
+        }
+
+
+        public void Enable()
+        {
+            gameObject.SetActive(true);
         }
 
 

@@ -15,9 +15,12 @@ namespace Enemy
         [SerializeField]
         private List<EnemyController> Enemies = new List<EnemyController>();
 
+        private EnamyPoolService enamyPoolService;
+
         protected override void Awake()
         {
             base.Awake();
+            enamyPoolService = GetComponent<EnamyPoolService>();
         }
 
 
@@ -44,7 +47,7 @@ namespace Enemy
         void SpawnEnamy(int enemyIndex, Vector3 spawnPos)
         {
             EnemyModel enemyModel = new EnemyModel(EnamyScriptableObjs[enemyIndex]);
-            EnemyController EnemyObj = new EnemyController(enemyModel, enemyModel.EnemyView, EnamyParent, spawnPos);
+            EnemyController EnemyObj = enamyPoolService.GetEnemy(enemyModel, enemyModel.EnemyView, EnamyParent, spawnPos);
             Enemies.Add(EnemyObj);
         }
 
@@ -61,18 +64,18 @@ namespace Enemy
         }
 
 
-        public void DestroyEnemy(EnemyController enemyTank)
+        public void DestroyEnemy(EnemyController enemyController)
         {
-            enemyTank.KillTank();
-            for (int i = 0; i < Enemies.Count; i++)
-            {
-                if (Enemies[i] == enemyTank)
-                {
-                    Enemies.Remove(Enemies[i]);
-                    break;
-                }
-            }
-            enemyTank = null;
+            enamyPoolService.ReturnItem(enemyController);
+            //for (int i = 0; i < Enemies.Count; i++)
+            //{
+            //    if (Enemies[i] == enemyTank)
+            //    {
+            //        Enemies.Remove(Enemies[i]);
+            //        break;
+            //    }
+            //}
+            //enemyTank = null;
             EventService.Instance.FireEnemyDeathEvent(AchievementName.EnemyDeathAchievement);
             SpawnEnemyOnSafePosition();
         }

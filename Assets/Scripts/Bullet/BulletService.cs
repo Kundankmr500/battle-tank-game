@@ -6,41 +6,33 @@ using ScriptableObj;
 
 namespace Bullet
 {
+    [RequireComponent(typeof(BulletPoolService))]
     public class BulletService : MonoSingletonGeneric<BulletService>
     {
         public Transform BulletParent;
         public List<BulletScriptableObj> BulletConfigurations;
 
-        private List<BulletController> Bullets = new List<BulletController>();
-
+        private BulletPoolService bulletPoolService;
 
         protected override void Awake()
         {
             base.Awake();
+            bulletPoolService = GetComponent<BulletPoolService>();
         }
 
 
         public BulletController GetBullet(Transform bulletTransform, float tankDamageBooster)
         {
             BulletModel bulletmodel = new BulletModel(bulletTransform, tankDamageBooster, BulletConfigurations[0]);
-            BulletController bulletController = new BulletController(bulletmodel, bulletmodel.BulletView, BulletParent);
-            Bullets.Add(bulletController);
+            BulletController bulletController = bulletPoolService.GetBullet(bulletmodel, bulletmodel.BulletView, BulletParent);
+            //bulletPoolService.InitItem(bulletController);
             return bulletController;
         }
 
 
-        public void DestroyBullet(BulletController bullet)
+        public void DestroyBullet(BulletController bulletController)
         {
-            bullet.KillController();
-            for (int i = 0; i < Bullets.Count; i++)
-            {
-                if (Bullets[i] == bullet)
-                {
-                    Bullets.Remove(Bullets[i]);
-                    break;
-                }
-            }
-            bullet = null;
+            bulletPoolService.ReturnItem(bulletController);
         }
 
     }

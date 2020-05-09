@@ -29,12 +29,12 @@ namespace Tank
 
         private void Awake()
         {
-            Debug.Log("Awake "+ DateTime.Now.Millisecond);
+            //Debug.Log("Awake "+ DateTime.Now.Millisecond);
         }
 
         private void Start()
         {
-            Debug.Log("Start "+ DateTime.Now.Millisecond);
+            //Debug.Log("Start "+ DateTime.Now.Millisecond);
             movementAxisName = Constants.VerticalInput + playerNumber;
             turnAxisName = Constants.HorizontalInput + playerNumber;
 
@@ -62,13 +62,18 @@ namespace Tank
             movementInputValue = 0f;
             turnInputValue = 0f;
 
-            
             for (int i = 0; i < ParticleSystems.Length; ++i)
             {
                 ParticleSystems[i].Play();
             }
         }
 
+        public void CheckTankTransform()
+        {
+            Enable();
+            transform.position = tankController.GetModel().SpawnPoint.position;
+            transform.rotation = tankController.GetModel().SpawnPoint.rotation;
+        }
 
 
         private void OnDisable()
@@ -112,9 +117,15 @@ namespace Tank
             tankController.TankTurn(tankBody, turnInputValue);
         }
 
-        public void KillView()
+        public void Disable()
         {
-            Destroy(gameObject);
+            gameObject.SetActive(false);
+        }
+
+
+        public void Enable()
+        {
+            gameObject.SetActive(true);
         }
     }
 }

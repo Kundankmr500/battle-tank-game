@@ -30,8 +30,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 192454}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.55, z: 0}
+  m_LocalRotation: {x: 0.0871554, y: -0, z: -0, w: -0.9961947}
+  m_LocalPosition: {x: 2.79, y: 1.7000122, z: -3.8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4975803836812436}
@@ -286,8 +286,6 @@ MonoBehaviour:
   TankMask:
     serializedVersion: 2
     m_Bits: 256
-  ExplosionParticles: {fileID: 198540207889710882}
-  ExplosionAudio: {fileID: 5999933129613385926}
   bulletBody: {fileID: 5409530}
 --- !u!1 &1291295503164410
 GameObject:

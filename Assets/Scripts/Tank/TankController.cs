@@ -10,8 +10,7 @@ namespace Tank
         {
             TankModel = tankModel;
             TankParent = tankParent;
-            TankView = GameObject.Instantiate<TankView>(tankPrefab, 
-                                  tankModel.SpawnPoint.position, tankModel.SpawnPoint.rotation);
+            TankView = GameObject.Instantiate<TankView>(tankPrefab);
             TankView.Initialize(this);
         }
 
@@ -76,14 +75,11 @@ namespace Tank
             }
         }
 
-        public void KillTank()
+        public void DisableTank()
         {
             VFXManager.Instance.PlayVFXClip(VFXName.TankExplosion, TankView.transform.position, TankParent);
             SoundManager.Instance.PlaySoundClip(ClipName.TankExplosion);
-            TankView.KillView();
-            TankModel = null;
-            TankView = null;
-            TankParent = null;
+            TankView.Disable();
         }
 
 

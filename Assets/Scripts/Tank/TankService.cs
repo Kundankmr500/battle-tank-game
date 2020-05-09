@@ -7,13 +7,14 @@ using Enemy;
 
 namespace Tank
 {
+    [RequireComponent(typeof(TankPoolService))]
     public class TankService : MonoSingletonGeneric<TankService>
     {
         
         public Transform TankParent;
-        public List<TankController> Tanks = new List<TankController>();
         public List<TankScriptableObj> TankScriptableObjs;
 
+        private TankPoolService tankPoolService;
         private TankView TankPrefab;
 
         protected override void Awake()
@@ -23,6 +24,7 @@ namespace Tank
 
         void Start()
         {
+            tankPoolService = GetComponent<TankPoolService>();
             for (int i = 0; i < TankScriptableObjs.Count; i++)
             {
                 SpawnTank(i);
@@ -34,24 +36,15 @@ namespace Tank
         {
             TankModel tankModel = new TankModel(TankScriptableObjs[tankIndex]);
             TankPrefab = tankModel.TankView;
-            TankController TankObj = new TankController(tankModel, TankPrefab, TankParent);
-            Tanks.Add(TankObj);
+            TankController tankController = tankPoolService.GetTank(tankModel, TankPrefab, TankParent);
+            tankPoolService.InitItem(tankController);
         }
 
 
-        public void DestroyTank(TankController tank)
+        public void DestroyTank(TankController tankController)
         {
-            tank.KillTank();
-            for (int i = 0; i < Tanks.Count; i++)
-            {
-                if(Tanks[i] == tank)
-                {
-                    Tanks.Remove(Tanks[i]);
-                    break;
-                }
-            }
-            
-            tank = null;
+            tankPoolService.ReturnItem(tankController);
+
             StartCoroutine(Haltgame(0.2f));
             StartCoroutine(EnemyService.Instance.DestroyAllEnemies());
         }
