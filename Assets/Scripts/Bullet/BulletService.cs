@@ -25,7 +25,6 @@ namespace Bullet
         {
             BulletModel bulletmodel = new BulletModel(bulletTransform, tankDamageBooster, BulletConfigurations[0]);
             BulletController bulletController = bulletPoolService.GetBullet(bulletmodel, bulletmodel.BulletView, BulletParent);
-            //bulletPoolService.InitItem(bulletController);
             return bulletController;
         }
 

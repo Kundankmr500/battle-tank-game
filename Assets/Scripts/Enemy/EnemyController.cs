@@ -1,7 +1,6 @@
 ﻿using Singalton;
 using UnityEngine;
 using Bullet;
-using System;
 
 namespace Enemy
 {
@@ -11,8 +10,7 @@ namespace Enemy
         {
             EnemyModel = enemyModel;
             EnemyParent = enemyParent;
-            EnemyView = GameObject.Instantiate<EnemyView>(enemyPrefab,
-                                  spawnPos, enemyModel.SpawnPointSafe.rotation);
+            EnemyView = GameObject.Instantiate<EnemyView>(enemyPrefab);
             EnemyView.Initialize(this);
         }
 

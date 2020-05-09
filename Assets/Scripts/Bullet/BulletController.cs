@@ -8,8 +8,7 @@ namespace Bullet
         {
             BulletModel = bulletModel;
             BulletParent = bulletParent;
-            BulletView = GameObject.Instantiate<BulletView>
-                (bulletPrefab);
+            BulletView = GameObject.Instantiate<BulletView>(bulletPrefab);
             BulletView.Initialize(this);
         }
 

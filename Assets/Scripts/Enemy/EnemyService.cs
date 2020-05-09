@@ -67,15 +67,7 @@ namespace Enemy
         public void DestroyEnemy(EnemyController enemyController)
         {
             enamyPoolService.ReturnItem(enemyController);
-            //for (int i = 0; i < Enemies.Count; i++)
-            //{
-            //    if (Enemies[i] == enemyTank)
-            //    {
-            //        Enemies.Remove(Enemies[i]);
-            //        break;
-            //    }
-            //}
-            //enemyTank = null;
+
             EventService.Instance.FireEnemyDeathEvent(AchievementName.EnemyDeathAchievement);
             SpawnEnemyOnSafePosition();
         }
